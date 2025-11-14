@@ -235,12 +235,12 @@ class AlternativeQuantumVirtualProcessor:
         if self.diagnostics_enabled and self.operation_count % 100 == 0:
             self._run_diagnostics()
     
-    def measure(self, reg: Optional[int] = None) -> Any:
+    def measure(self, reg=None):
         """
         Measure quantum state and project to classical state.
         
         Args:
-            reg (int, optional): Specific register to measure, or None for all
+            reg: Specific register (int), list of registers, or None for all
             
         Returns:
             Measurement result (int or list)
@@ -248,14 +248,27 @@ class AlternativeQuantumVirtualProcessor:
         import random
         
         if reg is not None:
-            # Measure specific qubit
-            if self.buffer.is_superposition[reg]:
-                # Collapse superposition randomly
-                result = random.choice([0, 1])
-                self.buffer.set_state(reg, result)
-                self.buffer.set_superposition(reg, False)
+            # Check if reg is a list of registers
+            if isinstance(reg, (list, tuple)):
+                # Measure multiple specific qubits
+                result = []
+                for r in reg:
+                    if self.buffer.is_superposition[r]:
+                        val = random.choice([0, 1])
+                        self.buffer.set_state(r, val)
+                        self.buffer.set_superposition(r, False)
+                        result.append(val)
+                    else:
+                        result.append(self.buffer.get_state(r))
             else:
-                result = self.buffer.get_state(reg)
+                # Measure single specific qubit
+                if self.buffer.is_superposition[reg]:
+                    # Collapse superposition randomly
+                    result = random.choice([0, 1])
+                    self.buffer.set_state(reg, result)
+                    self.buffer.set_superposition(reg, False)
+                else:
+                    result = self.buffer.get_state(reg)
         else:
             # Measure all qubits
             result = []
