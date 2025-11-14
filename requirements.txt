@@ -1,0 +1,2 @@
+# Pandora AIOS Requirements
+# No external dependencies for core functionality - uses Python standard library only
