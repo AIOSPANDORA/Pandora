@@ -190,10 +190,10 @@ class Hamiltonian:
     
     def _matrix_exponential(self, matrix: np.ndarray) -> np.ndarray:
         """
-        Compute matrix exponential via diagonalization.
+        Compute matrix exponential via scipy's expm for general matrices.
         
-        For Hermitian matrices, uses eigendecomposition:
-        exp(M) = V @ diag(exp(eigenvalues)) @ V†
+        For time evolution, we compute exp(-iHt) which is not Hermitian
+        (it's anti-Hermitian), so we need a general matrix exponential.
         
         Args:
             matrix (np.ndarray): Matrix to exponentiate
@@ -201,14 +201,8 @@ class Hamiltonian:
         Returns:
             np.ndarray: Matrix exponential
         """
-        # Use eigendecomposition for Hermitian matrices
-        eigenvalues, eigenvectors = np.linalg.eigh(matrix)
-        exp_eigenvalues = np.exp(eigenvalues)
-        
-        # Reconstruct: V @ diag(exp(λ)) @ V†
-        result = eigenvectors @ np.diag(exp_eigenvalues) @ eigenvectors.conj().T
-        
-        return result
+        from scipy.linalg import expm
+        return expm(matrix)
     
     def get_ground_state_energy(self) -> float:
         """
