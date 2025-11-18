@@ -24,10 +24,22 @@ share/python-wheels/
 MANIFEST
 
 # Virtual Environment
+# Virtual environments
 venv/
 ENV/
 env/
 .venv
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
 
 # IDE
 .vscode/
@@ -49,3 +61,15 @@ temp/
 
 # Pandora specific
 /var/log/pandora*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/

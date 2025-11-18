@@ -77,6 +77,14 @@ def chat():
 
 def fake_ai_response(msg):
     """Demo stub; you would call your AI/Pandora backend here"""
+    user_message = request.json["message"]
+    # AIOS Pandora call goes here in actual system
+    ai_response = fake_ai_response(user_message)
+    chat_history.append((user_message, ai_response))
+    return jsonify(response=ai_response)
+
+def fake_ai_response(msg):
+    # Demo stub; you would call your AI/Pandora backend here
     if "status" in msg.lower():
         return "System healthy. AI Pandora up."
     elif "sync" in msg.lower():

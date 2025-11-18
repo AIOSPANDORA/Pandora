@@ -42,6 +42,7 @@ Pandora AIOS is an AI Operating System built with stoic philosophy at its core. 
    ```
 
 ## Setup for USB/Live Boot
+## Setup
 
 1. **Integrate into ISO**  
    Use [Cubic](https://launchpad.net/cubic) to open your base Ubuntu ISO.  
@@ -130,3 +131,4 @@ For issues and questions, refer to the ethics documentation or examine the code 
 ## License
 
 Open source - designed for accessibility and community improvement.
+- Pandora always runs safe by default; full orchestrator only starts if health checks pass.

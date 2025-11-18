@@ -81,3 +81,7 @@ class StoicAdviser:
             "Your mind is your fortress. Guard it well."
         ]
         return random.choice(reflections)
+        "Stay tranquil in difficulty."
+    ]
+    def advise(self):
+        return random.choice(self.stoic_quotes)
