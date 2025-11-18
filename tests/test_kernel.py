@@ -3,7 +3,7 @@ Unit tests for Pandora AIOS Kernel
 """
 
 import unittest
-from pandora_aios.kernel import Kernel, Process, ProcessState
+from pandora_aios.kernel import Kernel
 
 
 class TestKernel(unittest.TestCase):
