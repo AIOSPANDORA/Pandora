@@ -1,0 +1,11 @@
+[Unit]
+Description=Pandora AIOS Main Service
+After=clamav-daemon.service network.target
+
+[Service]
+Type=simple
+ExecStart=/aios-pandora-usb/launch.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
