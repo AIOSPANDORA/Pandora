@@ -1,3 +1,5 @@
+# Pandora AIOS Requirements
+# No external dependencies for core functionality - uses Python standard library only
 # Pandora AIOS Dependencies
 
 # Web Framework for Assimilation Portal
