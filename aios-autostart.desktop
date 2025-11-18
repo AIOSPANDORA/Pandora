@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=/aios-pandora-usb/launch.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Pandora AIOS USB Autostart
+Comment=Launch Pandora AIOS system on login

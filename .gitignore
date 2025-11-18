@@ -19,11 +19,29 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
 # Virtual environments
 venv/
 ENV/
 env/
+.venv
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
 
 # IDE
 .vscode/
@@ -39,3 +57,10 @@ Thumbs.db
 # Test coverage
 .coverage
 htmlcov/
+# Logs
+*.log
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
