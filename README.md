@@ -65,6 +65,7 @@ Pandora AIOS is an AI Operating System built with stoic philosophy at its core. 
 
 - Antivirus and firewalls start before AIOS.
 - Pandora always runs safe by default; full orchestrator only starts if health checks pass.
+- Pandora always runs safe by default; full orchestrator only starts if health checks pass.
 
 ## Components
 

@@ -168,3 +168,4 @@ def main():
             pass
     except KeyboardInterrupt:
         fabric.stop()
+        fabric.stop()

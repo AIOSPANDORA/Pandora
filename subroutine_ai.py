@@ -69,3 +69,4 @@ class SubroutineAI:
     def get_all_recommendations(self):
         # Return optimal environment config, calm thresholds, cross-platform launcher
         return {}
+        return {}
