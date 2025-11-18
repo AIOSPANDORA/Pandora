@@ -91,7 +91,12 @@ class ConsciousnessStreamConfig:
             try:
                 with open(config_file, 'r') as f:
                     data = json.load(f)
-                    sources = [DataSource(**s) for s in data.get('sources', [])]
+                    sources = []
+                    for s in data.get('sources', []):
+                        # Handle both 'type' and 'source_type' for compatibility
+                        if 'type' in s and 'source_type' not in s:
+                            s['source_type'] = s.pop('type')
+                        sources.append(DataSource(**s))
                     return sources
             except Exception as e:
                 logger.error(f"Failed to load sources from {config_file}: {e}")
