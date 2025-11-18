@@ -7,6 +7,11 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
 .Python
 build/
 develop-eggs/
@@ -20,6 +25,9 @@ parts/
 sdist/
 var/
 wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
@@ -45,11 +53,23 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+# Virtual Environment
 # Virtual environments
 venv/
 ENV/
 env/
 .venv
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
 
 # IDE
 .vscode/
@@ -57,6 +77,20 @@ env/
 *.swp
 *.swo
 *~
+.DS_Store
+
+# Logs
+*.log
+logs/
+*.out
+
+# System
+.cache/
+tmp/
+temp/
+
+# Pandora specific
+/var/log/pandora*
 
 # OS
 .DS_Store
@@ -66,3 +100,13 @@ Thumbs.db
 *.tmp
 *.log
 tmp/
+# Test coverage
+.coverage
+htmlcov/
+# Logs
+*.log
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/

@@ -1,2 +1,21 @@
 # Pandora AIOS Requirements
 # No external dependencies for core functionality - uses Python standard library only
+# Pandora AIOS Dependencies
+
+# Web Framework for Assimilation Portal
+flask>=2.0.0
+flask-qrcode>=3.0.0
+
+# Security & Antivirus
+pyclamd>=0.4.0
+
+# System Monitoring
+psutil>=5.9.0
+
+# GUI (Optional - for desktop environments)
+# Uncomment if using GUI mode:
+# tkinter is usually built-in with Python
+
+# Optional: Advanced features
+# numpy>=1.21.0  # For quantum processor simulation
+# requests>=2.28.0  # For external API calls
