@@ -175,7 +175,7 @@ def test_measurement():
     # Just verify the method can be called without error
     
     # Test measuring specific hive (may return None from base class stub)
-    hive_result = empire.measure_hive((0, 0))
+    empire.measure_hive((0, 0))
     # Just verify the method can be called without error
     
     # Test invalid hive
