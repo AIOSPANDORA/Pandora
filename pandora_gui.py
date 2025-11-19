@@ -1,6 +1,13 @@
 """
 pandora_gui.py
 Simple Tkinter-based GUI for user control.
+
+Features:
+- Start/Stop AIOS system
+- Reset session (clear logs and state)
+- Real-time system log display
+- Status monitoring
+
 Philosophy: Clarity, ease of control, moderate feedback.
 """
 import tkinter as tk

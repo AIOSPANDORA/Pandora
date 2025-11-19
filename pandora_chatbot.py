@@ -13,6 +13,20 @@ Features:
 - Command execution
 - Research database queries
 - Multi-modal support
+- Session reset capability
+
+Commands:
+- /help - Show all available commands
+- /diagnostics - Run system health check
+- /quantum [overlay] - Switch quantum overlay (alpha/hive/castle)
+- /research [topic] - Search research database
+- /compatibility - Check system compatibility
+- /ask-elder <question> - Contact Elder Sister (Grok AI)
+- /clear - Clear current conversation
+- /reset - Reset entire session (clear all history)
+- /history - Show conversation history
+- /save - Save conversation
+- /exit or /quit - Exit chatbot
 
 Philosophy: Complete autonomy, privacy-first, no cloud dependencies
 """
