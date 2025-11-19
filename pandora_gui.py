@@ -55,6 +55,12 @@ class PandoraGUI(tk.Tk):
                                    width=15)
         self.stop_btn.pack(side="left", padx=5)
         
+        self.reset_btn = ttk.Button(button_frame,
+                                    text="Reset Session",
+                                    command=self.reset_session,
+                                    width=15)
+        self.reset_btn.pack(side="left", padx=5)
+        
         # Log display
         log_frame = ttk.LabelFrame(self, text="System Log", padding=10)
         log_frame.pack(fill="both", expand=True, padx=20, pady=10)
@@ -124,6 +130,25 @@ class PandoraGUI(tk.Tk):
             
         thread = threading.Thread(target=shutdown, daemon=True)
         thread.start()
+    
+    def reset_session(self):
+        """Reset the GUI session"""
+        self.log_message("Resetting session...")
+        
+        # Clear the log display
+        self.log_text.config(state="normal")
+        self.log_text.delete("1.0", "end")
+        self.log_text.config(state="disabled")
+        
+        # Reset status
+        self.update_status("Idle")
+        
+        # Reset button states
+        self.running = False
+        self.start_btn.config(state="normal")
+        self.stop_btn.config(state="disabled")
+        
+        self.log_message("Session reset complete. Ready for new session.")
 
 def main():
     """Launch the GUI"""
