@@ -10,7 +10,6 @@ Tests for:
 import unittest
 import sys
 import os
-import sqlite3
 from pathlib import Path
 import tempfile
 import shutil
