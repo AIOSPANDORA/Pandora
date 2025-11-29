@@ -14,6 +14,10 @@ from typing import List, Optional, Tuple
 from dataclasses import dataclass
 
 
+# Constants
+MASK_VALUE = -1e9  # Value used to mask out invalid attention positions
+
+
 @dataclass
 class AttentionOutput:
     """Output of attention computation."""
@@ -201,7 +205,7 @@ class ScaledDotProductAttention:
             for i in range(seq_len):
                 for j in range(seq_len):
                     if mask[i][j] == 0:
-                        scores[i][j] = -1e9
+                        scores[i][j] = MASK_VALUE
                         
         # Compute attention weights via softmax
         attention_weights = [softmax(row) for row in scores]

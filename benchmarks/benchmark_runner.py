@@ -19,6 +19,12 @@ from .causal_attention import (
 )
 
 
+# Constants for numerical stability
+TERM_CLAMP_LIMIT = 1e10
+TOTAL_CLAMP_LIMIT = 1e15
+GRAD_CLAMP_LIMIT = 1e10
+
+
 @dataclass
 class BenchmarkResult:
     """Result from a single benchmark run."""
@@ -49,11 +55,11 @@ def rosenbrock(params: List[float]) -> float:
     for i in range(n - 1):
         # Clamp intermediate values to prevent overflow
         term1 = params[i + 1] - params[i] ** 2
-        term1 = max(-1e10, min(1e10, term1))
+        term1 = max(-TERM_CLAMP_LIMIT, min(TERM_CLAMP_LIMIT, term1))
         term2 = 1 - params[i]
         term2 = max(-1e5, min(1e5, term2))
         total += 100 * term1 ** 2 + term2 ** 2
-        total = max(-1e15, min(1e15, total))
+        total = max(-TOTAL_CLAMP_LIMIT, min(TOTAL_CLAMP_LIMIT, total))
     return total
 
 
@@ -68,10 +74,10 @@ def rosenbrock_gradient(params: List[float]) -> List[float]:
         term = max(-1e5, min(1e5, term))
         
         grad[i] += -400 * params[i] * term - 2 * (1 - params[i])
-        grad[i] = max(-1e10, min(1e10, grad[i]))
+        grad[i] = max(-GRAD_CLAMP_LIMIT, min(GRAD_CLAMP_LIMIT, grad[i]))
         
         grad[i + 1] += 200 * term
-        grad[i + 1] = max(-1e10, min(1e10, grad[i + 1]))
+        grad[i + 1] = max(-GRAD_CLAMP_LIMIT, min(GRAD_CLAMP_LIMIT, grad[i + 1]))
         
     return grad
 

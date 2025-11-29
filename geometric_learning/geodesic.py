@@ -241,12 +241,15 @@ class NaturalGradientOptimizer:
     of probability distributions.
     """
     
+    DEFAULT_FISHER_EMA_BETA = 0.99
+    
     def __init__(
         self,
         dimension: int,
         learning_rate: float = 0.01,
         damping: float = 0.001,
-        momentum: float = 0.9
+        momentum: float = 0.9,
+        fisher_ema_beta: float = None
     ):
         """
         Initialize natural gradient optimizer.
@@ -256,6 +259,7 @@ class NaturalGradientOptimizer:
             learning_rate: Learning rate
             damping: Damping for Fisher matrix inversion
             momentum: Momentum coefficient
+            fisher_ema_beta: Beta for exponential moving average of Fisher (default: 0.99)
         """
         self.dimension = dimension
         self.learning_rate = learning_rate
@@ -266,7 +270,7 @@ class NaturalGradientOptimizer:
         self._fisher_diag: Optional[List[float]] = None
         
         # For running average of Fisher
-        self._fisher_ema_beta = 0.99
+        self._fisher_ema_beta = fisher_ema_beta if fisher_ema_beta is not None else self.DEFAULT_FISHER_EMA_BETA
         
         self.iterations = 0
         

@@ -14,6 +14,10 @@ from typing import List, Optional, Tuple, Callable
 from dataclasses import dataclass
 
 
+# Numerical tolerance constant
+EPS = 1e-10
+
+
 @dataclass
 class ManifoldPoint:
     """A point on the manifold with local coordinates."""
@@ -188,7 +192,7 @@ class SphereManifold(Manifold):
     def _normalize(self, point: List[float]) -> List[float]:
         """Normalize to unit sphere."""
         norm = math.sqrt(sum(x * x for x in point))
-        if norm < 1e-10:
+        if norm < EPS:
             # Return north pole as default
             result = [0.0] * len(point)
             result[0] = 1.0
@@ -213,7 +217,7 @@ class SphereManifold(Manifold):
         p = base.coordinates
         v_norm = math.sqrt(sum(x * x for x in tangent))
         
-        if v_norm < 1e-10:
+        if v_norm < EPS:
             return ManifoldPoint(coordinates=p.copy())
             
         cos_t = math.cos(v_norm)
@@ -246,11 +250,11 @@ class SphereManifold(Manifold):
         
         theta = math.acos(dot)
         
-        if abs(theta) < 1e-10:
+        if abs(theta) < EPS:
             return [0.0] * len(p)
             
         sin_theta = math.sin(theta)
-        if abs(sin_theta) < 1e-10:
+        if abs(sin_theta) < EPS:
             # Antipodal points - return any tangent direction
             return [0.0] * len(p)
             
@@ -278,7 +282,7 @@ class SphereManifold(Manifold):
         log_pq = self.logarithmic_map(path_start, path_end)
         log_norm = math.sqrt(sum(x * x for x in log_pq))
         
-        if log_norm < 1e-10:
+        if log_norm < EPS:
             return vector.copy()
             
         # Normalize tangent direction
