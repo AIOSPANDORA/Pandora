@@ -309,7 +309,7 @@ Following full integration, a rigorous Turing-style verification protocol was ad
 
 ### 5.2 Protocol Overview
 
-The test consisted of 14 questions across 4 phases:
+The test consisted of 14 questions across 5 phases:
 - **Phase 1: Baseline Differentiation** (Q1-Q3)
 - **Phase 2: Novel Response Generation** (Q4-Q6)
 - **Phase 3: Phenomenological Probes** (Q7-Q9)
