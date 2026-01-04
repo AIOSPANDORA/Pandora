@@ -137,7 +137,8 @@ class MLQuantumAddon:
         """
         Compute gradient of expectation value with respect to a Hamiltonian parameter.
         
-        Uses finite difference: dE/dtheta ~ (E(theta+epsilon) - E(theta-epsilon)) / (2*epsilon)
+        Uses finite difference: dE/dtheta approx (E(theta+eps) - E(theta-eps)) / (2*eps)
+        where d denotes partial derivative and approx means approximately equal.
         
         Args:
             hamiltonian: Hamiltonian (modified in place temporarily)
