@@ -24,8 +24,9 @@ __all__ = [
     'MLQuantumAddon',
     'QuantumProfileManager',
 ]
-Quantum Profiles Registry and Factory Functions
 
+# Quantum Profiles Registry and Factory Functions
+"""
 This module provides a central registry for quantum processor profiles and their add-ons.
 Pandora can dynamically discover, retrieve, and instantiate quantum processors through
 this extensible interface.
@@ -134,8 +135,9 @@ except ImportError as e:
 
 
 __all__ = ['list_profiles', 'get_profile', 'get_addons', 'register_profile']
-Quantum Profiles Package
 
+# Quantum Profiles Package
+"""
 This package contains various quantum processor profiles that Pandora can
 dynamically select and switch between.
 
@@ -200,6 +202,8 @@ __all__ = [
     'list_profiles'
 ]
 
+# Additional documentation
+"""
 This package provides various quantum processor profiles with integrated
 machine learning capabilities for adaptive quantum computation.
 
