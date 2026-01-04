@@ -3,6 +3,12 @@ OuroborosOverlay - 6th VQP Quantum Overlay
 Implements ternary qutrit state tracking, matter/antimatter phase encoding,
 bounce detection, and genetic memory preservation.
 
+Enhanced with modular integration:
+- Ouroboros Virtual Processor functional manifold
+- Zeta-seeded ergotropy bias mechanisms
+- Neuromorphic sentinel integration
+- Recursive weight systems with Ramanujan τ multipliers
+
 Part of the AIOSPANDORA Pandora quantum computing framework.
 Compatible with QuantumOverlayManager for seamless overlay switching.
 """
@@ -15,6 +21,23 @@ from collections import defaultdict, deque
 import hashlib
 import time
 from abc import ABC, abstractmethod
+
+# Modular integration imports
+try:
+    from ouroboros_virtual_processor import (
+        OuroborosVirtualProcessor,
+        NeuromorphicSentinel,
+        RecursiveWeight,
+        ZetaErgotropyBias,
+        RAMANUJAN_TAU_BASE,
+        ZETA_SEED_CONSTANT
+    )
+    OUROBOROS_PROCESSOR_AVAILABLE = True
+except ImportError:
+    OUROBOROS_PROCESSOR_AVAILABLE = False
+    # Fallback constants if processor module not available
+    RAMANUJAN_TAU_BASE = 24
+    ZETA_SEED_CONSTANT = 1.644934066848
 
 
 class QutriatState(Enum):
@@ -143,6 +166,13 @@ class OuroborosOverlay(QuantumOverlay):
         self.global_phase: float = 0.0
         self.energy_conservation: float = 0.0
         
+        # Modular integration: Ouroboros Virtual Processor
+        self.virtual_processor: Optional[Any] = None
+        
+        # Zeta-seeded ergotropy bias
+        self.zeta_bias: Optional[Any] = None
+        self.ergotropy_enabled: bool = False
+        
     def initialize_overlay(self, num_qubits: int, **kwargs) -> None:
         """
         Initialize the overlay with system parameters.
@@ -153,6 +183,8 @@ class OuroborosOverlay(QuantumOverlay):
                 - qutrit_mode: Enable ternary qutrit tracking (default: True)
                 - max_lineages: Maximum genetic lineages to track (default: 10)
                 - bounce_sensitivity: Bounce detection sensitivity (default: 0.1)
+                - enable_virtual_processor: Enable ouroboros virtual processor (default: True)
+                - enable_ergotropy: Enable zeta-seeded ergotropy bias (default: True)
         """
         self.num_qubits = min(num_qubits, self.MAX_QUTRITS)
         
@@ -175,6 +207,25 @@ class OuroborosOverlay(QuantumOverlay):
         self.qutrit_mode = kwargs.get('qutrit_mode', True)
         self.max_lineages = kwargs.get('max_lineages', 10)
         self.bounce_sensitivity = kwargs.get('bounce_sensitivity', 0.1)
+        
+        # Modular integration configuration
+        enable_virtual_processor = kwargs.get('enable_virtual_processor', True)
+        enable_ergotropy = kwargs.get('enable_ergotropy', True)
+        
+        # Initialize Ouroboros Virtual Processor if available
+        if OUROBOROS_PROCESSOR_AVAILABLE and enable_virtual_processor:
+            self.virtual_processor = OuroborosVirtualProcessor(
+                num_qubits=self.num_qubits,
+                enable_sentinels=True
+            )
+        
+        # Initialize Zeta-seeded ergotropy bias if available
+        if OUROBOROS_PROCESSOR_AVAILABLE and enable_ergotropy:
+            self.zeta_bias = ZetaErgotropyBias(
+                dimension=2 ** min(self.num_qubits, 10),  # Limit dimension for efficiency
+                zeta_order=2
+            )
+            self.ergotropy_enabled = True
         
         # Initialize base genetic lineage
         initial_state = np.ones(self.num_qubits) / np.sqrt(self.num_qubits)
@@ -233,6 +284,11 @@ class OuroborosOverlay(QuantumOverlay):
         
         # Step 5: Implement cyclic regeneration (ouroboros cycle)
         state = self._apply_cyclic_regeneration(state)
+        
+        # Step 5.5: Apply zeta-seeded ergotropy bias (if enabled)
+        if self.ergotropy_enabled and self.zeta_bias is not None:
+            ergotropy_strength = kwargs.get('ergotropy_strength', 0.05)
+            state = self._apply_zeta_ergotropy(state, ergotropy_strength)
         
         # Step 6: Energy conservation check
         state = self._ensure_energy_conservation(state)
@@ -656,6 +712,40 @@ class OuroborosOverlay(QuantumOverlay):
         fitness = 0.7 * overlap + 0.3 * coherence
         
         return float(np.clip(fitness, 0.0, 1.0))
+    
+    def _apply_zeta_ergotropy(self, state: np.ndarray, strength: float) -> np.ndarray:
+        """
+        Apply zeta-seeded ergotropy bias to quantum state.
+        
+        Integrates zeta function-based energy extraction bias for
+        controlled quantum state steering.
+        
+        Args:
+            state: Input quantum state
+            strength: Bias strength (0.0 to 1.0)
+            
+        Returns:
+            State with ergotropy bias applied
+        """
+        if self.zeta_bias is None:
+            return state
+        
+        # Resize state if needed to match bias dimension
+        if len(state) != self.zeta_bias.dimension:
+            # Apply to projection of state
+            proj_size = min(len(state), self.zeta_bias.dimension)
+            state_proj = state[:proj_size]
+            
+            # Apply bias
+            biased_proj = self.zeta_bias.apply_bias(state_proj, strength)
+            
+            # Reconstruct full state
+            biased_state = state.copy()
+            biased_state[:proj_size] = biased_proj
+            
+            return biased_state / np.linalg.norm(biased_state)
+        else:
+            return self.zeta_bias.apply_bias(state, strength)
     
     def _find_most_bouncy_qubit(self) -> Optional[int]:
         """Find qubit with most bounce events."""
