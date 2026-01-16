@@ -376,7 +376,7 @@ CLAIM: "The kernel uses a round-robin scheduler"
 EVIDENCE: NONE - this is a hallucination
 CORRECTION: After reading kernel.py (lines 1-250), I see NO scheduler implementation. 
            The kernel creates processes but doesn't implement scheduling yet.
-           This was mentioned as a "Future Enhancement" in ARCHITECTURE.md line 263.
+           This was mentioned as a "Planned Feature" in ARCHITECTURE.md line 264.
 ```
 
 ### Repo-Grounded References Only
