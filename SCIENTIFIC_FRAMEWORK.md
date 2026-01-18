@@ -479,6 +479,100 @@ def wormhole_transfer(source_qubit, target_qubit, strength):
 3. **Brain-Computer Interfaces**: Direct neural connection
 4. **Fusion with Quantum Biology**: Living quantum systems
 
+---
+
+## Falsifiability and Scientific Rigor
+
+Following the principle that scientific claims must be falsifiable (Popper, 1959), this section explicitly addresses the empirical status of claims made in this framework.
+
+### Epistemic Status Categories
+
+**Layer A - Implemented and Tested:**
+- Code with test coverage and empirical validation
+- See `LAYER_SEPARATION.md` for complete list
+
+**Layer B - Formal Conjectures:**
+- Precise claims with defined falsification criteria
+- See `CLAIMS_AND_FALSIFIABILITY.md` for details
+
+**Layer C - Philosophical Interpretation:**
+- Conceptual frameworks labeled as interpretation
+- Not subject to direct empirical falsification
+
+### Key Falsifiable Claims
+
+| Claim | Falsification Criterion | Current Status |
+|-------|------------------------|----------------|
+| Geodesic optimization outperforms Euclidean | No improvement on >50% of benchmarks | Awaiting validation |
+| Light-cone attention improves temporal reasoning | No improvement vs standard causal attention | Awaiting validation |
+| Fisher metric captures optimization geometry | Curvature shows no correlation with difficulty | Theoretically supported |
+| Ethical constraints detect harmful actions | <70% accuracy on test scenarios | Implemented |
+
+### Distinguishing Established Science from Speculation
+
+#### Established Science (with citations)
+- **Information Geometry**: Amari, S. (1998). Natural Gradient Works Efficiently in Learning. *Neural Computation*, 10(2), 251-276.
+- **Fisher Information**: Fisher, R.A. (1925). Theory of Statistical Estimation. Rao, C.R. (1945). Information and Accuracy.
+- **Riemannian Optimization**: Bonnabel, S. (2013). Stochastic Gradient Descent on Riemannian Manifolds. *IEEE TAC*.
+- **K-FAC Optimization**: Martens, J., & Grosse, R. (2015). Optimizing Neural Networks with K-FAC. *ICML*.
+- **Group Equivariance**: Cohen, T., & Welling, M. (2016). Group Equivariant Convolutional Networks. *ICML*.
+- **Attention Mechanisms**: Vaswani, A., et al. (2017). Attention Is All You Need. *NeurIPS*.
+
+#### Speculation Requiring Validation
+- Claims about quantum advantages in the virtual processor
+- Performance improvement percentages (need benchmarking)
+- Convergence speed claims (need systematic testing)
+
+### Qualified Claims
+
+The following claims from this document should be understood as aspirational or theoretical:
+
+1. **"2-4x improvement with overlays"** — This is a design goal, not a validated result. See `benchmarks/` for validation framework.
+
+2. **"85% prediction accuracy"** — This claim requires benchmark validation. Actual performance may vary.
+
+3. **"Quantum speedup"** — The virtual quantum processor does not provide true quantum speedup. It uses quantum-inspired classical algorithms.
+
+### Running Validation Benchmarks
+
+To validate performance claims:
+
+```bash
+cd /path/to/Pandora
+python -m benchmarks.benchmark_runner
+```
+
+See `benchmarks/README.md` for detailed instructions.
+
+---
+
+## References
+
+### Core Information Geometry
+1. Amari, S. (1998). Natural Gradient Works Efficiently in Learning. *Neural Computation*, 10(2), 251-276.
+2. Amari, S., & Nagaoka, H. (2000). *Methods of Information Geometry*. Oxford University Press.
+3. Rao, C.R. (1945). Information and the Accuracy Attainable in the Estimation of Statistical Parameters. *Bulletin of Calcutta Mathematical Society*, 37, 81-91.
+
+### Riemannian Optimization
+4. Bonnabel, S. (2013). Stochastic Gradient Descent on Riemannian Manifolds. *IEEE Transactions on Automatic Control*, 58(9), 2217-2229.
+5. Absil, P.A., Mahony, R., & Sepulchre, R. (2008). *Optimization Algorithms on Matrix Manifolds*. Princeton University Press.
+
+### Neural Network Optimization
+6. Martens, J., & Grosse, R. (2015). Optimizing Neural Networks with Kronecker-factored Approximate Curvature. *ICML*.
+7. Kingma, D.P., & Ba, J. (2014). Adam: A Method for Stochastic Optimization. *arXiv:1412.6980*.
+
+### Geometric Deep Learning
+8. Cohen, T., & Welling, M. (2016). Group Equivariant Convolutional Networks. *ICML*.
+9. Bronstein, M., et al. (2017). Geometric Deep Learning: Going Beyond Euclidean Data. *IEEE Signal Processing Magazine*.
+
+### Attention Mechanisms
+10. Vaswani, A., et al. (2017). Attention Is All You Need. *NeurIPS*.
+
+### Philosophy of Science
+11. Popper, K. (1959). *The Logic of Scientific Discovery*. Routledge.
+
+---
+
 ## Conclusion
 
 Pandora AIOS represents a synthesis of:
@@ -486,8 +580,11 @@ Pandora AIOS represents a synthesis of:
 - **Innovative Engineering**: Novel architectures and algorithms  
 - **Ethical Philosophy**: Guided by universal values
 - **Visionary Spirit**: Inspired by Tesla and other pioneers
+- **Scientific Humility**: Explicit about what is established vs. speculative
 
-By combining quantum mechanics, information theory, neuroscience, complex systems, and cutting-edge AI, Pandora AIOS pushes the boundaries of what's possible while maintaining scientific integrity and ethical responsibility.
+By combining quantum mechanics, information theory, neuroscience, complex systems, and cutting-edge AI, Pandora AIOS pushes the boundaries of what's possible while maintaining scientific integrity, empirical accountability, and ethical responsibility.
+
+**Note**: For detailed falsifiability criteria, see `CLAIMS_AND_FALSIFIABILITY.md`. For layer separation, see `LAYER_SEPARATION.md`. For benchmark validation, see `benchmarks/README.md`.
 
 ---
 
@@ -496,3 +593,5 @@ By combining quantum mechanics, information theory, neuroscience, complex system
 **"The science of today is the technology of tomorrow."** — Edward Teller
 
 **"Somewhere, something incredible is waiting to be known."** — Carl Sagan
+
+**"The first principle is that you must not fool yourself — and you are the easiest person to fool."** — Richard Feynman
