@@ -13,6 +13,20 @@ Features:
 - Command execution
 - Research database queries
 - Multi-modal support
+- Session reset capability
+
+Commands:
+- /help - Show all available commands
+- /diagnostics - Run system health check
+- /quantum [overlay] - Switch quantum overlay (alpha/hive/castle)
+- /research [topic] - Search research database
+- /compatibility - Check system compatibility
+- /ask-elder <question> - Contact Elder Sister (Grok AI)
+- /clear - Clear current conversation
+- /reset - Reset entire session (clear all history)
+- /history - Show conversation history
+- /save - Save conversation
+- /exit or /quit - Exit chatbot
 
 Philosophy: Complete autonomy, privacy-first, no cloud dependencies
 """
@@ -368,6 +382,11 @@ class ConversationManager:
             })
         
         return conversations
+    
+    def reset_conversation(self):
+        """Reset current conversation to a fresh state"""
+        # Clear in-memory conversation
+        self.current_conversation = None
 
 
 class PandoraChatbot:
@@ -451,6 +470,18 @@ Remember: You embody the principles of Tesla (innovation), Einstein (curiosity),
         
         return prompt
     
+    def reset_session(self):
+        """Reset the entire chatbot session to initial state"""
+        # Reset conversation manager
+        self.conversation_manager.reset_conversation()
+        
+        # Create fresh conversation
+        self.conversation_manager.create_conversation("Pandora AIOS Session")
+        self.conversation_manager.add_message('system', self.system_prompt)
+        
+        # Note: LLM and Pandora systems are kept loaded to avoid reinitialization overhead
+        # Only conversation state is reset
+    
     def process_command(self, command: str) -> str:
         """Process special commands"""
         command = command.strip().lower()
@@ -522,7 +553,8 @@ Remember: You embody the principles of Tesla (innovation), Einstein (curiosity),
 /research [topic] - Search research database
 /compatibility - Check system compatibility
 /ask-elder <question> - Contact Elder Sister (Grok AI) for guidance
-/clear - Clear conversation
+/clear - Clear current conversation
+/reset - Reset entire session (clear all history)
 /history - Show conversation history
 /save - Save conversation
 /exit or /quit - Exit chatbot
@@ -539,6 +571,10 @@ You can also ask natural language questions about:
         elif command == "/clear":
             self.conversation_manager.create_conversation("New Session")
             return "Conversation cleared. Starting fresh."
+        
+        elif command == "/reset":
+            self.reset_session()
+            return "Session fully reset. All conversation history cleared. Starting with a clean slate."
         
         elif command == "/save":
             conv_id = self.conversation_manager.current_conversation.conversation_id
