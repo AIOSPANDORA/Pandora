@@ -9,40 +9,16 @@ import numpy as np
 from typing import Dict, List, Optional, Tuple, Any
 from datetime import datetime
 from .hamiltonian import Hamiltonian
-MLQuantumAddon - Machine Learning Quantum Process Logging and Training
 
-This addon provides on-the-fly machine learning capabilities for quantum processors,
-logging all quantum operations and supporting incremental training of ML models.
-
-Features:
-- Logs quantum gates, measurements, expansion, and diagnostics
-- Supports on-the-fly incremental training (default: enabled)
-- Compatible with scikit-learn and custom pluggable models
-- Self-instrumenting for adaptive learning
-
-Usage:
-    Basic usage with default settings:
-    >>> from quantum_profiles.ml_quantum_addon import MLQuantumAddon
-    >>> addon = MLQuantumAddon()
-    >>> addon.before_gate("H", 0, {"qubits": 4})
-    >>> addon.after_gate("H", 0, {"qubits": 4})
-    
-    With custom ML model (scikit-learn):
-    >>> from sklearn.linear_model import SGDClassifier
-    >>> model = SGDClassifier()
-    >>> addon = MLQuantumAddon(model=model, train_on_fly=True)
-    
-    With custom pluggable model:
-    >>> class CustomModel:
-    ...     def partial_fit(self, X, y, classes=None):
-    ...         # Your incremental learning logic
-    ...         pass
-    >>> addon = MLQuantumAddon(model=CustomModel(), train_on_fly=True)
-    
-    Accessing logged events:
-    >>> events = addon.get_events()
-    >>> print(f"Logged {len(events)} events")
-"""
+# MLQuantumAddon - Machine Learning Quantum Process Logging and Training
+# This addon provides on-the-fly machine learning capabilities for quantum processors,
+# logging all quantum operations and supporting incremental training of ML models.
+#
+# Features:
+# - Logs quantum gates, measurements, expansion, and diagnostics
+# - Supports on-the-fly incremental training (default: enabled)
+# - Compatible with scikit-learn and custom pluggable models
+# - Self-instrumenting for adaptive learning
 
 import time
 import logging
@@ -161,7 +137,8 @@ class MLQuantumAddon:
         """
         Compute gradient of expectation value with respect to a Hamiltonian parameter.
         
-        Uses finite difference: ∂E/∂θ ≈ (E(θ+ε) - E(θ-ε)) / (2ε)
+        Uses finite difference: dE/dtheta approx (E(theta+eps) - E(theta-eps)) / (2*eps)
+        where d denotes partial derivative and approx means approximately equal.
         
         Args:
             hamiltonian: Hamiltonian (modified in place temporarily)
@@ -669,9 +646,7 @@ class MLQuantumAddon:
         return len(self.event_log)
     
     def clear_events(self) -> None:
-        """
-        Clear all logged events and buffers.
-        """
+        """Clear all logged events and buffers."""
         self.event_log.clear()
         self.feature_buffer.clear()
         self.label_buffer.clear()

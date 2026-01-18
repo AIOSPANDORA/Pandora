@@ -9,9 +9,25 @@ Now enhanced with Hamiltonian support through quantum profiles:
 - Hive: Collective behavior through distributed entanglement
 - Empire: Hierarchical control with cascading interactions
 - Omega: Optimized balanced configuration across all operators
+
+Enhanced with neuromorphic sentinel and recursive weight integration:
+- Neuromorphic sentinels for adaptive state monitoring
+- Recursive weights with Ramanujan τ multipliers
+- Integration with Ouroboros Virtual Processor functional manifold
 """
 
 from quantum_profiles import QuantumProfileManager
+
+# Modular integration for ouroboros components
+try:
+    from ouroboros_virtual_processor import (
+        NeuromorphicSentinel,
+        RecursiveWeight,
+        RAMANUJAN_TAU_BASE
+    )
+    OUROBOROS_INTEGRATION_AVAILABLE = True
+except ImportError:
+    OUROBOROS_INTEGRATION_AVAILABLE = False
 
 
 import random
@@ -95,6 +111,11 @@ class QuantumVirtualProcessor:
     
     Provides quantum simulation capabilities with multiple processor profiles,
     each with characteristic Hamiltonians for different computational paradigms.
+    
+    Enhanced with:
+    - Neuromorphic sentinel monitoring for adaptive state tracking
+    - Recursive weights with Ramanujan τ multipliers
+    - Integration with Ouroboros Virtual Processor
     """
     
     def __init__(self, qubits=6, profile='alternative'):
@@ -112,6 +133,32 @@ class QuantumVirtualProcessor:
             default_profile=profile,
             n_qubits=qubits
         )
+        
+        # Neuromorphic sentinel integration
+        self.sentinels = []
+        self.recursive_weights = []
+        
+        if OUROBOROS_INTEGRATION_AVAILABLE:
+            # Initialize neuromorphic sentinels
+            num_sentinels = max(2, qubits // 3)
+            self.sentinels = [
+                NeuromorphicSentinel(
+                    sentinel_id=i,
+                    threshold=0.4 + 0.05 * i,
+                    learning_rate=0.02
+                )
+                for i in range(num_sentinels)
+            ]
+            
+            # Initialize recursive weights with Ramanujan τ multipliers
+            self.recursive_weights = [
+                RecursiveWeight(
+                    index=i,
+                    base_weight=1.0 / (i + 1),
+                    tau_multiplier=1.0
+                )
+                for i in range(qubits)
+            ]
     
     def apply_gate(self, gate, reg):
         """
@@ -210,6 +257,97 @@ class QuantumVirtualProcessor:
         Returns:
             Dictionary with summary information
         """
-        return self.profile_manager.get_summary()
+        summary = self.profile_manager.get_summary()
+        
+        # Add neuromorphic sentinel and recursive weight information
+        if OUROBOROS_INTEGRATION_AVAILABLE:
+            summary['neuromorphic_sentinels'] = {
+                'count': len(self.sentinels),
+                'sentinel_info': [
+                    {
+                        'id': s.sentinel_id,
+                        'threshold': s.threshold,
+                        'sensitivity': s.sensitivity,
+                        'activations': len(s.activation_history)
+                    }
+                    for s in self.sentinels
+                ]
+            }
+            
+            summary['recursive_weights'] = {
+                'count': len(self.recursive_weights),
+                'weights': [
+                    {
+                        'index': rw.index,
+                        'base_weight': rw.base_weight,
+                        'tau_multiplier': rw.tau_multiplier,
+                        'recursion_depth': rw.recursion_depth
+                    }
+                    for rw in self.recursive_weights
+                ]
+            }
+        
+        return summary
+    
+    def monitor_state_with_sentinels(self, state=None):
+        """
+        Monitor quantum state using neuromorphic sentinels.
+        
+        Args:
+            state: Quantum state to monitor (None = current state)
+            
+        Returns:
+            Dictionary with sentinel monitoring results
+        """
+        if not OUROBOROS_INTEGRATION_AVAILABLE or not self.sentinels:
+            return {'sentinels_available': False}
+        
+        if state is None:
+            state = self.profile_manager.get_state()
+        
+        results = {
+            'sentinels_available': True,
+            'triggers': [],
+            'activations': []
+        }
+        
+        for sentinel in self.sentinels:
+            triggered = sentinel.monitor(state)
+            results['triggers'].append({
+                'sentinel_id': sentinel.sentinel_id,
+                'triggered': triggered,
+                'threshold': sentinel.threshold
+            })
+            if len(sentinel.activation_history) > 0:
+                results['activations'].append({
+                    'sentinel_id': sentinel.sentinel_id,
+                    'last_activation': sentinel.activation_history[-1]
+                })
+        
+        return results
+    
+    def evolve_recursive_weights(self, iteration):
+        """
+        Evolve recursive weights using Ramanujan τ multipliers.
+        
+        Args:
+            iteration: Current iteration number
+            
+        Returns:
+            List of evolved weight values
+        """
+        if not OUROBOROS_INTEGRATION_AVAILABLE or not self.recursive_weights:
+            return []
+        
+        evolved_weights = []
+        for rw in self.recursive_weights:
+            weight = rw.evolve(iteration)
+            evolved_weights.append({
+                'index': rw.index,
+                'weight': weight,
+                'tau_multiplier': rw.tau_multiplier
+            })
+        
+        return evolved_weights
         # ... project to classical state ...
         pass

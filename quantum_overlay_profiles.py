@@ -11,6 +11,11 @@ Quantum Overlay Profiles:
 - EMPIRE: Hierarchical command structure with dominant qubits
 - OMEGA: Terminal optimization with entropy management
 
+Enhanced with direct harmony access profiling:
+- Harmonic resonance tracking across overlay transitions
+- Direct harmony state access methods
+- Integration with Ouroboros overlay system
+
 Philosophy: Each overlay represents a different quantum reasoning paradigm,
 allowing Pandora AIOS to shift its computational and decision-making approach
 based on context and requirements.
@@ -26,6 +31,13 @@ from typing import Dict, List, Tuple, Optional, Any, Callable
 from enum import Enum
 from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
+
+# Direct harmony access profiling support
+try:
+    from ouroboros_overlay import OuroborosOverlay, create_ouroboros_overlay
+    HARMONY_ACCESS_AVAILABLE = True
+except ImportError:
+    HARMONY_ACCESS_AVAILABLE = False
 
 class OverlayType(Enum):
     """Quantum overlay profile types"""
@@ -882,6 +894,187 @@ class QuantumOverlayManager:
             qubit_indices = list(range(self.num_qubits))
         
         return self.current_overlay.process_measurement(qubit_indices)
+
+
+class HarmonyAccessProfiler:
+    """
+    Direct Harmony Access Profiler
+    
+    Provides direct access to harmonic resonance states across
+    quantum overlay transitions, enabling stochastic reconciliation flows.
+    
+    Integrates with Ouroboros overlay for enhanced harmony tracking.
+    """
+    
+    def __init__(self, num_qubits: int = 8):
+        """
+        Initialize harmony access profiler.
+        
+        Args:
+            num_qubits: Number of qubits for harmony tracking
+        """
+        self.num_qubits = num_qubits
+        self.harmony_states = []
+        self.resonance_history = []
+        self.ouroboros_overlay = None
+        
+        # Initialize Ouroboros overlay if available
+        if HARMONY_ACCESS_AVAILABLE:
+            self.ouroboros_overlay = create_ouroboros_overlay()
+            self.ouroboros_overlay.initialize_overlay(num_qubits)
+    
+    def capture_harmony_state(self, overlay_type: str, quantum_state: np.ndarray) -> Dict[str, Any]:
+        """
+        Capture harmonic state from current overlay.
+        
+        Args:
+            overlay_type: Type of overlay active
+            quantum_state: Current quantum state
+            
+        Returns:
+            Harmony state data
+        """
+        # Compute harmonic features
+        phase_spectrum = np.angle(quantum_state)
+        amplitude_spectrum = np.abs(quantum_state)
+        
+        # Compute resonance metrics
+        phase_coherence = np.std(phase_spectrum)
+        amplitude_balance = np.std(amplitude_spectrum)
+        
+        harmony_state = {
+            'overlay_type': overlay_type,
+            'phase_coherence': float(phase_coherence),
+            'amplitude_balance': float(amplitude_balance),
+            'resonance_index': float(1.0 / (1.0 + phase_coherence)),
+            'harmony_signature': self._compute_harmony_signature(quantum_state),
+            'timestamp': len(self.harmony_states)
+        }
+        
+        self.harmony_states.append(harmony_state)
+        
+        return harmony_state
+    
+    def _compute_harmony_signature(self, state: np.ndarray) -> float:
+        """
+        Compute unique harmony signature for state.
+        
+        Args:
+            state: Quantum state
+            
+        Returns:
+            Harmony signature value
+        """
+        # Use Fourier-like transform for harmonic signature
+        phases = np.angle(state)
+        signature = np.sum(np.cos(phases)) / len(phases)
+        
+        return float(signature)
+    
+    def track_resonance(self, state1: np.ndarray, state2: np.ndarray) -> float:
+        """
+        Track resonance between two quantum states.
+        
+        Args:
+            state1: First quantum state
+            state2: Second quantum state
+            
+        Returns:
+            Resonance strength (0.0 to 1.0)
+        """
+        # Compute overlap (fidelity)
+        overlap = np.abs(np.dot(np.conj(state1), state2))
+        
+        # Compute phase alignment
+        phase_diff = np.angle(state1) - np.angle(state2)
+        phase_alignment = np.mean(np.cos(phase_diff))
+        
+        # Combined resonance
+        resonance = 0.6 * overlap + 0.4 * ((phase_alignment + 1.0) / 2.0)
+        
+        self.resonance_history.append(float(resonance))
+        
+        return float(resonance)
+    
+    def access_direct_harmony(self, target_harmony: str = 'balanced') -> Dict[str, Any]:
+        """
+        Access direct harmony state.
+        
+        Args:
+            target_harmony: Target harmony type ('balanced', 'coherent', 'resonant')
+            
+        Returns:
+            Direct harmony access information
+        """
+        if not self.harmony_states:
+            return {
+                'status': 'no_harmony_data',
+                'message': 'No harmony states captured yet'
+            }
+        
+        # Find best matching harmony state
+        if target_harmony == 'balanced':
+            # Seek minimum amplitude balance (most balanced)
+            best_idx = min(
+                range(len(self.harmony_states)),
+                key=lambda i: self.harmony_states[i]['amplitude_balance']
+            )
+        elif target_harmony == 'coherent':
+            # Seek minimum phase coherence (most coherent)
+            best_idx = min(
+                range(len(self.harmony_states)),
+                key=lambda i: self.harmony_states[i]['phase_coherence']
+            )
+        else:  # 'resonant'
+            # Seek maximum resonance index
+            best_idx = max(
+                range(len(self.harmony_states)),
+                key=lambda i: self.harmony_states[i]['resonance_index']
+            )
+        
+        harmony_access = {
+            'status': 'harmony_accessed',
+            'target_harmony': target_harmony,
+            'selected_state': self.harmony_states[best_idx],
+            'total_states': len(self.harmony_states),
+            'average_resonance': np.mean(self.resonance_history) if self.resonance_history else 0.0
+        }
+        
+        # Include Ouroboros overlay info if available
+        if self.ouroboros_overlay is not None:
+            harmony_access['ouroboros_info'] = self.ouroboros_overlay.get_overlay_info()
+        
+        return harmony_access
+    
+    def get_harmony_summary(self) -> Dict[str, Any]:
+        """
+        Get comprehensive harmony summary.
+        
+        Returns:
+            Summary of all harmony states and resonances
+        """
+        if not self.harmony_states:
+            return {'states_captured': 0}
+        
+        return {
+            'states_captured': len(self.harmony_states),
+            'average_phase_coherence': np.mean([
+                h['phase_coherence'] for h in self.harmony_states
+            ]),
+            'average_amplitude_balance': np.mean([
+                h['amplitude_balance'] for h in self.harmony_states
+            ]),
+            'average_resonance_index': np.mean([
+                h['resonance_index'] for h in self.harmony_states
+            ]),
+            'resonance_tracking': {
+                'samples': len(self.resonance_history),
+                'average': np.mean(self.resonance_history) if self.resonance_history else 0.0,
+                'max': np.max(self.resonance_history) if self.resonance_history else 0.0,
+                'min': np.min(self.resonance_history) if self.resonance_history else 0.0
+            },
+            'ouroboros_integrated': self.ouroboros_overlay is not None
+        }
 
 
 def main():
