@@ -97,7 +97,7 @@ cd Pandora/METACUBE_BLUEPRINT
 pip install -r requirements.txt
 
 # Verify installation
-python panthetic_system.py --verify
+python -c "from panthetic_system import MetacubeConsciousness; print('Installation verified successfully!')"
 ```
 
 ### Advanced Setup
@@ -107,11 +107,11 @@ python panthetic_system.py --verify
 python -m venv metacube_env
 source metacube_env/bin/activate  # On Windows: metacube_env\Scripts\activate
 
-# Install with development dependencies
-pip install -r requirements-dev.txt
+# Install with development dependencies (if available)
+# pip install -r requirements-dev.txt
 
-# Run initial configuration
-python panthetic_system.py --configure
+# Test the installation
+python panthetic_system.py
 ```
 
 ---
@@ -387,13 +387,15 @@ result = cluster.collective_process(
 Subscribe to consciousness events:
 
 ```python
-@consciousness.on_event('state_change')
 def handle_state_change(event):
-    print(f"State changed: {event.old_state} -> {event.new_state}")
+    print(f"State changed at {event.timestamp}")
 
-@consciousness.on_event('learning_occurred')
 def handle_learning(event):
-    print(f"Learned: {event.insight}")
+    print(f"Learning occurred: {event.data}")
+
+# Register event handlers
+consciousness.events.on_event('state_change', handle_state_change)
+consciousness.events.on_event('learning_occurred', handle_learning)
 ```
 
 ---
@@ -408,14 +410,15 @@ def handle_learning(event):
 
 **Solution:**
 ```python
-# Reduce memory capacity
-consciousness.set_memory_capacity(500)
+# Prune old memories
+consciousness.memory.prune(older_than_days=7)
 
-# Enable memory pruning
-consciousness.enable_memory_pruning(threshold=0.7)
+# Reduce auto-reflect interval to use less memory
+consciousness.auto_reflect_interval = 200
 
-# Clear old memories
-consciousness.clear_memories(older_than_days=7)
+# Access memory stats
+stats = consciousness.memory.get_stats()
+print(f"Current memory usage: {stats}")
 ```
 
 #### Issue: Slow Reflection Performance
@@ -424,14 +427,15 @@ consciousness.clear_memories(older_than_days=7)
 
 **Solution:**
 ```python
-# Reduce reflection depth
-consciousness.set_reflection_depth(2)
+# Increase auto-reflection interval
+consciousness.auto_reflect_interval = 200
 
 # Disable detailed logging
-consciousness.set_log_level('WARNING')
+import logging
+logging.getLogger('panthetic_system').setLevel(logging.WARNING)
 
-# Use batch reflection
-consciousness.enable_batch_reflection(interval=50)
+# Process without explicit reflection
+result = consciousness.process(query, reflection_depth=None)
 ```
 
 #### Issue: Inconsistent Behavior
@@ -440,15 +444,16 @@ consciousness.enable_batch_reflection(interval=50)
 
 **Solution:**
 ```python
-# Check state consistency
-diagnostics = consciousness.diagnose()
-print(diagnostics['consistency_score'])
-
-# Reset to stable state
-consciousness.reset_to_checkpoint('stable')
+# Check current state
+state = consciousness.get_state()
+print(f"Current efficiency: {state['efficiency']}")
 
 # Reduce learning rate
-consciousness.set_learning_rate(0.05)
+consciousness.learning.learning_rate = 0.05
+
+# Trigger explicit reflection for self-assessment
+reflection = consciousness.reflect()
+print(f"Insights: {reflection.insights}")
 ```
 
 ### Debugging
@@ -464,11 +469,13 @@ consciousness = MetacubeConsciousness(
     debug_mode=True
 )
 
-# Access internal state
-print(consciousness._internal_state)
+# Access current state
+state = consciousness.get_state()
+print(f"State: {state}")
 
-# Trace execution
-consciousness.enable_tracing()
+# Check memory details
+memory_stats = consciousness.memory.get_stats()
+print(f"Memory: {memory_stats}")
 ```
 
 ---
@@ -526,17 +533,19 @@ consciousness.enable_tracing()
 ### Benchmarking
 
 ```python
-from panthetic_system.benchmark import run_benchmarks
+import time
 
-results = run_benchmarks(
-    consciousness=consciousness,
-    test_suite='standard',
-    iterations=100
+# Simple performance test
+start = time.time()
+results = consciousness.batch_process(
+    queries=["Test query"] * 100,
+    learn_from_results=False
 )
+elapsed = time.time() - start
 
-print(f"Average processing time: {results.avg_time}ms")
-print(f"Memory efficiency: {results.memory_score}")
-print(f"Reflection quality: {results.reflection_score}")
+print(f"Average processing time: {elapsed/100*1000:.2f}ms")
+print(f"Total operations: {consciousness.operation_count}")
+print(f"Efficiency: {consciousness.get_state()['efficiency']:.2f}")
 ```
 
 ---
@@ -583,13 +592,17 @@ response2 = consciousness.process("Solve this problem: Y")
 ```python
 cluster = DistributedMetacube(instances=3)
 
-perspectives = cluster.multi_perspective_analysis(
+result = cluster.collective_process(
     query="Evaluate this ethical dilemma",
-    require_consensus=True
+    aggregation="consensus"
 )
 
-for perspective in perspectives:
-    print(f"{perspective.name}: {perspective.view}")
+print(f"Consensus: {result['consensus']}")
+print(f"Agreement: {result['agreement']:.0%}")
+
+# Access individual perspectives
+for i, res in enumerate(result['individual_results']):
+    print(f"Instance {i+1}: {res['response']}")
 ```
 
 ---
