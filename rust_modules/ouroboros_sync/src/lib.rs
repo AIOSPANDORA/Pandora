@@ -162,22 +162,50 @@ impl OuroborosSync {
 
         // Check 2: Verify chain continuity
         let chain_check = if self.blockchain.is_empty() {
-            block.index == 0
+            // Genesis block must have index 0
+            if block.index != 0 {
+                return ValidationResult {
+                    valid: false,
+                    reason: format!("Genesis block must have index 0, got {}", block.index),
+                    ergotropy_check: false,
+                    stability_check: false,
+                    hash_check,
+                    chain_check: false,
+                };
+            }
+            true
         } else {
             let last_block = self.blockchain.last().unwrap();
-            block.index == last_block.index + 1 && block.previous_hash == last_block.hash
+            
+            // Check index continuity
+            if block.index != last_block.index + 1 {
+                return ValidationResult {
+                    valid: false,
+                    reason: format!(
+                        "Block index {} does not follow previous index {}",
+                        block.index, last_block.index
+                    ),
+                    ergotropy_check: false,
+                    stability_check: false,
+                    hash_check,
+                    chain_check: false,
+                };
+            }
+            
+            // Check hash continuity
+            if block.previous_hash != last_block.hash {
+                return ValidationResult {
+                    valid: false,
+                    reason: "Block previous_hash does not match last block hash".to_string(),
+                    ergotropy_check: false,
+                    stability_check: false,
+                    hash_check,
+                    chain_check: false,
+                };
+            }
+            
+            true
         };
-
-        if !chain_check {
-            return ValidationResult {
-                valid: false,
-                reason: "Block chain continuity check failed".to_string(),
-                ergotropy_check: false,
-                stability_check: false,
-                hash_check,
-                chain_check,
-            };
-        }
 
         // Check 3: Ergotropy threshold check
         let ergotropy_check = self.check_ergotropy_threshold(block.ergotropy);

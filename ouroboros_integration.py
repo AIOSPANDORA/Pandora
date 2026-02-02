@@ -109,8 +109,8 @@ class OuroborosIntegratedSystem:
             
             # Validate through consensus if available
             if self.sync is not None:
-                data = f"cycle_{self.overlay.cycle_counter}_ergotropy_{ergotropy:.4f}"
-                block = self.sync.create_block(data=data, ergotropy=ergotropy)
+                block_data = f"cycle_{self.overlay.cycle_counter}_ergotropy_{ergotropy:.4f}"
+                block = self.sync.create_block(data=block_data, ergotropy=ergotropy)
                 validation = self.sync.validate_and_add_block(block)
                 
                 result['consensus_validation'] = validation

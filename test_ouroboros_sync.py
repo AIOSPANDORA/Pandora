@@ -9,6 +9,9 @@ import time
 import sys
 import os
 
+# Constants
+GENESIS_HASH = "0" * 64
+
 # Try to import the wrapper and Rust module
 try:
     from ouroboros_sync_wrapper import OuroborosSyncWrapper, RUST_MODULE_AVAILABLE
@@ -28,7 +31,7 @@ class TestAethelBlock(unittest.TestCase):
             index=0,
             timestamp=time.time(),
             data="test data",
-            previous_hash="0" * 64,
+            previous_hash=GENESIS_HASH,
             ergotropy=0.8
         )
         
@@ -44,7 +47,7 @@ class TestAethelBlock(unittest.TestCase):
             index=0,
             timestamp=time.time(),
             data="test data",
-            previous_hash="0" * 64,
+            previous_hash=GENESIS_HASH,
             ergotropy=0.8
         )
         
@@ -106,7 +109,7 @@ class TestOuroborosSync(unittest.TestCase):
             index=0,
             timestamp=time.time(),
             data="genesis",
-            previous_hash="0" * 64,
+            previous_hash=GENESIS_HASH,
             ergotropy=0.8
         )
         
@@ -125,7 +128,7 @@ class TestOuroborosSync(unittest.TestCase):
             index=0,
             timestamp=time.time(),
             data="low ergotropy",
-            previous_hash="0" * 64,
+            previous_hash=GENESIS_HASH,
             ergotropy=0.3  # Below 0.5 threshold
         )
         
@@ -141,7 +144,7 @@ class TestOuroborosSync(unittest.TestCase):
             index=0,
             timestamp=time.time(),
             data="genesis",
-            previous_hash="0" * 64,
+            previous_hash=GENESIS_HASH,
             ergotropy=0.8
         )
         self.sync.add_block(genesis)
@@ -167,7 +170,7 @@ class TestOuroborosSync(unittest.TestCase):
                 index=i,
                 timestamp=time.time(),
                 data=f"block {i}",
-                previous_hash=self.sync.get_last_block().hash if i > 0 else "0" * 64,
+                previous_hash=self.sync.get_last_block().hash if i > 0 else GENESIS_HASH,
                 ergotropy=0.6 + (i * 0.01)  # Stable progression
             )
             result = self.sync.add_block(block)
@@ -194,7 +197,7 @@ class TestOuroborosSync(unittest.TestCase):
                 index=i,
                 timestamp=time.time(),
                 data=f"block {i}",
-                previous_hash=self.sync.get_last_block().hash if i > 0 else "0" * 64,
+                previous_hash=self.sync.get_last_block().hash if i > 0 else GENESIS_HASH,
                 ergotropy=0.6
             )
             self.sync.add_block(block)
@@ -214,7 +217,7 @@ class TestOuroborosSync(unittest.TestCase):
                 index=i,
                 timestamp=time.time(),
                 data=f"block {i}",
-                previous_hash=self.sync.get_last_block().hash if i > 0 else "0" * 64,
+                previous_hash=self.sync.get_last_block().hash if i > 0 else GENESIS_HASH,
                 ergotropy=0.7
             )
             self.sync.add_block(block)
