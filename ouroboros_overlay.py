@@ -23,7 +23,7 @@ import time
 from abc import ABC, abstractmethod
 
 from pandora_aios.toroidal_qutrit import ToroidalQutrit
-from pandora_aios.quantum_virtual_processor import QuantumVirtualProcessor as QVPCoherence
+from pandora_aios.quantum_virtual_processor import QuantumVirtualProcessor as QVP
 from pandora_aios.hebbian import HebbianWeightUpdate
 
 # Modular integration imports
@@ -180,6 +180,8 @@ class OuroborosOverlay(QuantumOverlay):
         # Toroidal Qutrit + E8E8 coherence field integration
         self.qutrits: List[ToroidalQutrit] = []
         self.e8e8_coherence_field = None
+        self._qvp: Optional[Any] = None
+        self._hebbian: Optional[HebbianWeightUpdate] = None
         
     def initialize_overlay(self, num_qubits: int, **kwargs) -> None:
         """
@@ -199,6 +201,8 @@ class OuroborosOverlay(QuantumOverlay):
         # Initialize ToroidalQutrit array and E8E8 coherence field
         self.qutrits = [ToroidalQutrit() for _ in range(self.num_qubits)]
         self.e8e8_coherence_field = self._init_e8e8_field()
+        self._qvp = QVP(self.num_qubits)
+        self._hebbian = HebbianWeightUpdate(dim=496)
         
         # Initialize qutrit states
         self.qutrit_states = {
@@ -795,19 +799,17 @@ class OuroborosOverlay(QuantumOverlay):
         for i in range(1, k + 1):
             coupling += np.sin(np.roll(phases, -i) - phases)
             coupling += np.sin(np.roll(phases, i) - phases)
-        coupling /= (2 * k) if k > 0 else 1.0
+        coupling /= (2 * k)
         for idx, q in enumerate(self.qutrits):
             q.evolve(dt, coupling[idx])
 
-        # 2. Apply E8E8 projection to collective state
-        qvp = QVPCoherence(num_qutrits)
-        qvp.qutrits = self.qutrits  # reuse existing qutrits
-        proj = qvp.e8e8_project()  # 496-dim vector
+        # 2. Apply E8E8 projection to collective state (reuse persistent QVP)
+        self._qvp.qutrits = self.qutrits
+        proj = self._qvp.e8e8_project()  # 496-dim vector
 
-        # 3. Feed coherence vector into HebbianWeightUpdate
-        hwu = HebbianWeightUpdate(dim=496)
+        # 3. Feed coherence vector into HebbianWeightUpdate (persistent instance)
         updated_phases = np.array([q.phase for q in self.qutrits])
-        hwu.update(proj, phases=updated_phases)
+        self._hebbian.update(proj, phases=updated_phases)
 
         return proj
 
