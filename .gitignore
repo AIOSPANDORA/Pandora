@@ -137,3 +137,12 @@ htmlcov/
 .coverage
 htmlcov/
 .pytest_cache/
+
+# Rust build artifacts
+rust_modules/**/target/
+rust_modules/**/*.rs.bk
+rust_modules/**/Cargo.lock
+
+# Keep the .so file in the root, but ignore in subdirectories  
+rust_modules/**/*.so
+!ouroboros_sync.so

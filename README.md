@@ -12,6 +12,10 @@ Pandora AIOS is an educational and experimental project that combines traditiona
 - Work with a virtual file system
 - Experience AI-driven system optimization
 
+## Documentation
+
+- **[LOL:D Session Guide](./LOLD_SESSION_GUIDE.md)** - Comprehensive guide for conducting GitHub Copilot sessions with epistemic rigor, including LOL:D (Linguistically Optimized Ledger: Delta) and LOL:OB8 methodologies
+
 ## Features
 
 ### Core Components
