@@ -16,7 +16,6 @@ import time
 from pathlib import Path
 
 from WEAVE_VP import (
-    ToroidalQutrit,
     ToroidalCoherence,
     QuantumVirtualProcessorWEAVE,
     CoherenceEngineWEAVE,
