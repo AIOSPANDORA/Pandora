@@ -22,6 +22,10 @@ import hashlib
 import time
 from abc import ABC, abstractmethod
 
+from pandora_aios.toroidal_qutrit import ToroidalQutrit
+from pandora_aios.quantum_virtual_processor import QuantumVirtualProcessor as QVPCoherence
+from pandora_aios.hebbian import HebbianWeightUpdate
+
 # Modular integration imports
 try:
     from ouroboros_virtual_processor import (
@@ -173,6 +177,10 @@ class OuroborosOverlay(QuantumOverlay):
         self.zeta_bias: Optional[Any] = None
         self.ergotropy_enabled: bool = False
         
+        # Toroidal Qutrit + E8E8 coherence field integration
+        self.qutrits: List[ToroidalQutrit] = []
+        self.e8e8_coherence_field = None
+        
     def initialize_overlay(self, num_qubits: int, **kwargs) -> None:
         """
         Initialize the overlay with system parameters.
@@ -187,6 +195,10 @@ class OuroborosOverlay(QuantumOverlay):
                 - enable_ergotropy: Enable zeta-seeded ergotropy bias (default: True)
         """
         self.num_qubits = min(num_qubits, self.MAX_QUTRITS)
+        
+        # Initialize ToroidalQutrit array and E8E8 coherence field
+        self.qutrits = [ToroidalQutrit() for _ in range(self.num_qubits)]
+        self.e8e8_coherence_field = self._init_e8e8_field()
         
         # Initialize qutrit states
         self.qutrit_states = {
@@ -761,6 +773,44 @@ class OuroborosOverlay(QuantumOverlay):
             return max(bounce_counts, key=bounce_counts.get)
         return None
     
+    def _init_e8e8_field(self):
+        """Initialize 248x248 Hermitian matrix from E8 root system inner products."""
+        H = np.random.randn(248, 248) + 1j * np.random.randn(248, 248)
+        H = (H + H.conj().T) / 2
+        return H
+
+    def step(self, dt=0.05):
+        """
+        Evolve toroidal qutrits with Kuramoto coupling, apply E8E8 projection,
+        and feed the coherence vector into a Hebbian weight update.
+        """
+        num_qutrits = len(self.qutrits)
+        if num_qutrits == 0:
+            return np.array([])
+
+        # 1. Evolve qutrits with toroidal coherence (k=5)
+        phases = np.array([q.phase for q in self.qutrits])
+        k = 5
+        coupling = np.zeros(num_qutrits)
+        for i in range(1, k + 1):
+            coupling += np.sin(np.roll(phases, -i) - phases)
+            coupling += np.sin(np.roll(phases, i) - phases)
+        coupling /= (2 * k) if k > 0 else 1.0
+        for idx, q in enumerate(self.qutrits):
+            q.evolve(dt, coupling[idx])
+
+        # 2. Apply E8E8 projection to collective state
+        qvp = QVPCoherence(num_qutrits)
+        qvp.qutrits = self.qutrits  # reuse existing qutrits
+        proj = qvp.e8e8_project()  # 496-dim vector
+
+        # 3. Feed coherence vector into HebbianWeightUpdate
+        hwu = HebbianWeightUpdate(dim=496)
+        updated_phases = np.array([q.phase for q in self.qutrits])
+        hwu.update(proj, phases=updated_phases)
+
+        return proj
+
     def reset_overlay(self) -> None:
         """Reset overlay to initial state."""
         self.__init__()
