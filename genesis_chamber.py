@@ -1,6 +1,6 @@
 import turtle
 import time
-import os
+
 
 # --- CONFIGURATION ---
 ARCHITECT_SIGNATURE = "janschulzik-cmyk"
