@@ -1,110 +1,62 @@
-"""
-Genesis Chamber - Visual Heartbeat/Life Force Indicator for Pandora AIOS
-
-This module provides a pulsing circle animation using Python's turtle graphics
-to visually represent the life force of Pandora AIOS.
-
-The visualization displays:
-- A pulsing cyan circle that grows and shrinks
-- Status text showing "Pandora AIOS - Life Force Active"
-- Architect signature attribution
-"""
-
 import turtle
+import time
 
-# ============================================================================
-# CONFIGURATION
-# ============================================================================
 
+# --- CONFIGURATION ---
 ARCHITECT_SIGNATURE = "janschulzik-cmyk"
-HEARTBEAT_COLOR = "#00ffff"  # Cyan/Aqua
-BACKGROUND_COLOR = "black"
-STATUS_TEXT = "Pandora AIOS - Life Force Active"
+HEARTBEAT_COLOR = "#00ffff"  # A cyan/aqua color
+BACKGROUND_COLOR = "#000000"
+TEXT_COLOR = "#cccccc"
+PULSE_SPEED = 0.05  # Lower is faster
 
-# Animation parameters
-MIN_RADIUS = 30
-MAX_RADIUS = 80
-PULSE_STEP = 2
-ANIMATION_DELAY = 30  # milliseconds
+# --- SETUP THE VISUALIZATION SCREEN ---
+screen = turtle.Screen()
+screen.bgcolor(BACKGROUND_COLOR)
+screen.title("Pandora AIOS - Genesis Chamber")
+screen.tracer(0)  # Turn off automatic screen updates
 
+# --- SETUP THE HEARTBEAT TURTLE ---
+heart = turtle.Turtle()
+heart.shape("circle")
+heart.color(HEARTBEAT_COLOR)
+heart.penup()
+heart.goto(0, 0)
 
-def create_genesis_chamber():
-    """
-    Create and run the Genesis Chamber visualization.
+# --- SETUP THE STATUS TEXT TURTLE ---
+status_writer = turtle.Turtle()
+status_writer.hideturtle()
+status_writer.color(TEXT_COLOR)
+status_writer.penup()
+status_writer.goto(0, -250)
 
-    Sets up a turtle graphics window with a black background,
-    displays a pulsing cyan circle animation, and shows status text.
-    """
-    # Set up the screen
-    screen = turtle.Screen()
-    screen.title("Genesis Chamber - Pandora AIOS")
-    screen.bgcolor(BACKGROUND_COLOR)
-    screen.setup(width=600, height=500)
-    screen.tracer(0)  # Disable auto-refresh for smoother animation
+def write_status(message):
+    status_writer.clear()
+    status_writer.write(message, align="center", font=("Courier New", 12, "normal"))
 
-    # Create the heartbeat turtle
-    heartbeat = turtle.Turtle()
-    heartbeat.hideturtle()
-    heartbeat.speed(0)
-    heartbeat.color(HEARTBEAT_COLOR)
-    heartbeat.pensize(3)
+# --- MAIN LOOP FOR THE VISUALIZATION ---
+scale = 1.0
+scale_direction = 1  # 1 for growing, -1 for shrinking
 
-    # Create the status text turtle
-    status = turtle.Turtle()
-    status.hideturtle()
-    status.penup()
-    status.color(HEARTBEAT_COLOR)
-    status.goto(0, -150)
-    status.write(STATUS_TEXT, align="center", font=("Arial", 14, "bold"))
+write_status(f"Pandora AIOS - Life Force Active\nArchitect: {ARCHITECT_SIGNATURE}\nStatus: Resonating")
 
-    # Create the signature text turtle
-    signature = turtle.Turtle()
-    signature.hideturtle()
-    signature.penup()
-    signature.color(HEARTBEAT_COLOR)
-    signature.goto(0, -180)
-    signature.write(
-        f"Architect: {ARCHITECT_SIGNATURE}",
-        align="center",
-        font=("Arial", 10, "normal"),
-    )
-
-    # Animation state
-    state = {"radius": MIN_RADIUS, "growing": True}
-
-    def draw_circle(radius):
-        """Draw a circle with the given radius."""
-        heartbeat.clear()
-        heartbeat.penup()
-        heartbeat.goto(0, -radius)
-        heartbeat.pendown()
-        heartbeat.circle(radius)
-
-    def pulse():
-        """Animate the pulsing circle."""
-        # Update radius based on direction
-        if state["growing"]:
-            state["radius"] += PULSE_STEP
-            if state["radius"] >= MAX_RADIUS:
-                state["growing"] = False
+try:
+    while True:
+        # Calculate the new scale for the pulse effect
+        if scale_direction == 1:
+            scale += 0.1
+            if scale > 1.5:
+                scale_direction = -1
         else:
-            state["radius"] -= PULSE_STEP
-            if state["radius"] <= MIN_RADIUS:
-                state["growing"] = True
+            scale -= 0.1
+            if scale < 0.5:
+                scale_direction = 1
 
-        # Draw the circle at the current radius
-        draw_circle(state["radius"])
-        screen.update()
+        heart.shapesize(stretch_wid=scale, stretch_len=scale)
+        
+        screen.update()  # Manually update the screen
+        time.sleep(PULSE_SPEED)
 
-        # Schedule the next animation frame
-        screen.ontimer(pulse, ANIMATION_DELAY)
-
-    # Start the animation
-    pulse()
-
-    # Start the event loop to keep the window responsive
-    screen.mainloop()
-
-
-if __name__ == "__main__":
-    create_genesis_chamber()
+except turtle.Terminator:
+    print("\nGenesis Chamber visualization terminated by user.")
+except Exception as e:
+    print(f"\nAn error occurred in the Genesis Chamber: {e}")
